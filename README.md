@@ -14,10 +14,15 @@
 ## 快速开始
 
 ```bash
-git clone <repo-url> && cd agent-audit
-pip install -e .            # 或不安装直接跑：PYTHONPATH=src python -m agent_audit
-agent-audit                 # 默认审计 Hermes 环境 + 当前工作区
-agent-audit --checks ports,mcp          # 只跑指定检查
+pip install agent-env-audit     # PyPI（发行版即将上线；import 包名为 agent_audit）
+# 或从源码安装
+pip install git+https://github.com/mo9652962-ai/agent-audit.git
+# 或免安装直接跑
+git clone https://github.com/mo9652962-ai/agent-audit.git && cd agent-audit
+PYTHONPATH=src python -m agent_audit
+
+agent-audit                     # 默认审计 Hermes 环境 + 当前工作区
+agent-audit --checks ports,mcp  # 只跑指定检查
 agent-audit --skills-dir ~/agents/skills --config-dir ~/agents
 ```
 
@@ -83,6 +88,11 @@ python -m agent_audit -c audit.toml
 ```
 
 默认路径自动探测：Hermes（`%LOCALAPPDATA%/hermes`，非 Windows 为 `~/.hermes`）、Claude Desktop（`%APPDATA%/Claude`）；`--skills-dir` / `--config-dir` / `--mcp-config` / `--workspace` 可多次指定，叠加在配置文件之后。
+
+## 文档
+
+- [MCP Server 安全审计白皮书](docs/mcp-security-audit-whitepaper.md) — 5 项 OWASP 对齐判定清单，可直接落地
+- [系列文章：我给自己的 AI Agent 环境做了次安全审计](blog/01-self-audit-report.md) — 真实机器的完整审计记录
 
 ## 设计原则
 

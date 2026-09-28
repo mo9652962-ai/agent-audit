@@ -3,7 +3,8 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "agent-audit"
+# 发行名用 agent-env-audit（PyPI 的 agent-audit 已被占用）；import 包名保持 agent_audit
+name = "agent-env-audit"
 version = "0.1.0"
 description = "AI Agent 环境安全审计 CLI：供应链投毒 / 密钥暴露 / 端口暴露 / MCP server 一键体检"
 readme = "README.md"
