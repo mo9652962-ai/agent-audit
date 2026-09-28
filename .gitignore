@@ -1,0 +1,22 @@
+# 吃自己的狗粮：本仓库自身的密钥防护规则（与工具建议一致）
+*.env
+**/.env
+.env.*
+config.yaml
+**/config.yaml
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+build/
+dist/
+.pytest_cache/
+
+# 审计报告输出
+agent-audit-reports/
+
+# 本地工具状态（安全插件的会话数据）
+.mimosa/
