@@ -1,0 +1,47 @@
+name: Publish to PyPI
+
+# 打 v* tag（如 v0.1.0）或手动触发 → uv build → OIDC 免 token 发布。
+# 前提（一次性）: PyPI 项目 Settings → Publishing 配 Trusted Publisher:
+#   Owner=mo9652962-ai  Repository=agent-audit  Workflow name=publish.yml  Environment=pypi
+# 同时记得 bump pyproject 的 version——PyPI 不允许同版本重传。
+#
+# 发行名 = agent-env-audit（PyPI 的 agent-audit 已被占用）；import 包名保持 agent_audit。
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Sync dependencies
+        run: uv sync --extra dev
+
+      - name: Run tests before publish
+        run: uv run pytest -q
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write # PyPI Trusted Publishing (OIDC)
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Build sdist & wheel
+        run: uv build
+
+      - name: Publish
+        uses: pypa/gh-action-pypi-publish@release/v1
