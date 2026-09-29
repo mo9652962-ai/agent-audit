@@ -11,7 +11,7 @@ from pathlib import Path
 def run_cmd(args: list[str], timeout: int = 30, cwd: str | None = None) -> tuple[int, str, str]:
     """执行命令，返回 (rc, stdout, stderr)；命令不存在时 rc=127。"""
     try:
-        p = subprocess.run(  # noqa: PLW1510 —— 返回码由调用方语义化处理；nosec B603 参数全为工具自构造
+        p = subprocess.run(  # noqa: PLW1510  # nosec B603 —— 返回码由调用方语义化处理，参数全为工具自构造
             args,
             capture_output=True,
             text=True,
