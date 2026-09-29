@@ -12,6 +12,7 @@ import json
 import re
 import shutil
 from pathlib import Path
+
 from ..models import CheckResult, Finding
 from .common import run_cmd
 

@@ -15,7 +15,7 @@ except ModuleNotFoundError:  # Python 3.10
 
 from . import __version__
 from .checks import ALL_CHECKS, CHECK_FUNCS
-from .models import CheckResult, SEVERITY_ORDER
+from .models import SEVERITY_ORDER, CheckResult
 from .report import STATUS_ICONS, overall_verdict, render_json, render_markdown
 
 
@@ -116,7 +116,7 @@ def main(argv=None) -> int:
             continue
         try:
             r = CHECK_FUNCS[name](ctx)
-        except Exception as e:  # 单项失败不阻断整体
+        except Exception as e:  # noqa: BLE001 —— 单项失败不阻断整体，属设计内
             r = CheckResult(name=name, title=name, summary=f"检查执行出错：{e}")
             r.status = "error"
         results.append(r)
@@ -125,7 +125,7 @@ def main(argv=None) -> int:
 
     outdir = Path(args.output_dir)
     outdir.mkdir(parents=True, exist_ok=True)
-    stamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    stamp = datetime.datetime.now().astimezone().strftime("%Y%m%d-%H%M%S")
     scope = "; ".join(filter(None, [
         f"skills={ctx['skills_dirs']}",
         f"config={ctx['config_dirs']}",

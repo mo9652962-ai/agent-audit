@@ -16,6 +16,7 @@ import re
 import sys
 from pathlib import Path
 from urllib.parse import urlparse
+
 from ..models import CheckResult, Finding
 from .common import is_loopback, is_private_ip
 
@@ -175,7 +176,7 @@ def check(ctx: dict) -> CheckResult:
             continue
         try:
             servers, toolsets, parser = _parse_config(path)
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 —— 解析失败降级为 error 发现项，不阻断其他配置
             details[str(path)] = {"error": f"解析失败：{e}"}
             continue
         entry: dict = {"parser": parser, "servers": {}}

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
+
 from ..models import CheckResult, Finding
 from .common import run_cmd
 
@@ -16,7 +17,7 @@ CHECK_TITLE = "Git 泄漏检查"
 
 TRACKED_SECRET_RE = re.compile(
     r"(^|/)\.env(\..+)?$|config\.ya?ml$|\.(pem|key|p12|pfx)$|(^|/)secret",
-    re.I,
+    re.IGNORECASE,
 )
 REQUIRED_RULES = [".env", "config.yaml"]
 

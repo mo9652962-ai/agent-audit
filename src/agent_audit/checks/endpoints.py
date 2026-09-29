@@ -11,6 +11,7 @@ import re
 from collections import Counter
 from pathlib import Path
 from urllib.parse import urlparse
+
 from ..models import CheckResult, Finding
 from .common import is_ip, is_loopback, is_private_ip, iter_files
 

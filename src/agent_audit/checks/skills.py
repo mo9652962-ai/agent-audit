@@ -9,6 +9,7 @@ ClawHub 3984 技能中 13.4% 含严重安全问题、36.8% 有漏洞。
 from __future__ import annotations
 
 from pathlib import Path
+
 from ..models import CheckResult, Finding
 
 CHECK_NAME = "skills"

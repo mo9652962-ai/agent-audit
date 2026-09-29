@@ -18,7 +18,7 @@ CRITERIA = [
     ("MCP server 全部本地/官方，闲置项已禁用", "mcp"),
 ]
 
-STATUS_ICONS = {"pass": "✅", "warn": "🟡", "fail": "❌", "skipped": "⏭️", "error": "⚠️"}
+STATUS_ICONS = {"pass": "✅", "warn": "🟡", "fail": "❌", "skipped": "⏭️", "error": "⚠️"}  # nosec B105 —— 状态图标非口令
 
 
 def overall_verdict(results: list[CheckResult]) -> str:
@@ -39,7 +39,7 @@ def _cell(s: str) -> str:
 
 
 def render_markdown(results: list[CheckResult], threshold: str, scope: str) -> str:
-    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    now = datetime.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S")
     verdict = overall_verdict(results)
     counts = {s: 0 for s in ("critical", "high", "medium", "low", "info")}
     for r in results:
@@ -113,7 +113,7 @@ def render_markdown(results: list[CheckResult], threshold: str, scope: str) -> s
 def render_json(results: list[CheckResult], threshold: str, scope: str) -> dict:
     return {
         "tool": "agent-audit",
-        "generated_at": datetime.datetime.now().isoformat(timespec="seconds"),
+        "generated_at": datetime.datetime.now().astimezone().isoformat(timespec="seconds"),
         "hostname": socket.gethostname(),
         "platform": f"{platform.system()} {platform.release()}",
         "scope": scope,

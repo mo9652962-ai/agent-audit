@@ -10,6 +10,7 @@ from __future__ import annotations
 import ipaddress
 import re
 import sys
+
 from ..models import CheckResult, Finding
 from .common import run_cmd
 
@@ -119,7 +120,7 @@ def check(ctx: dict) -> CheckResult:
     for l in listeners:
         l["process"] = _proc_name(l["pid"], proc_cache)
         addr, port = l["addr"], l["port"]
-        is_any = addr in ("0.0.0.0", "::", "*")
+        is_any = addr in ("0.0.0.0", "::", "*")  # nosec B104 —— 字面量用于匹配暴露面，非绑定操作
         ev = f"{addr}:{port} PID {l['pid']} {l['process']}".strip()
         if is_any:
             wildcard_n += 1

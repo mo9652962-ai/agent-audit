@@ -9,7 +9,7 @@ SEVERITY_ORDER = {"info": 0, "low": 1, "medium": 2, "high": 3, "critical": 4}
 SEVERITY_ICONS = {"critical": "🔴", "high": "🟠", "medium": "🟡", "low": "🔵", "info": "⚪"}
 
 
-def worst_severity(findings: list["Finding"]) -> str | None:
+def worst_severity(findings: list[Finding]) -> str | None:
     """返回 findings 中最高严重度，无发现时返回 None。"""
     worst = None
     for f in findings:

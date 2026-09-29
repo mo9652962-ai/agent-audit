@@ -12,6 +12,7 @@ from __future__ import annotations
 import re
 import sys
 from pathlib import Path
+
 from ..models import CheckResult, Finding
 from .common import iter_files, run_cmd
 
@@ -85,7 +86,7 @@ def _check_perms(path: Path, findings: list[Finding], details: dict) -> None:
             details[key] = {"error": err.strip() or "icacls failed"}
             return
         wide = [ln.strip() for ln in out.splitlines()
-                if re.search(r"(Everyone|BUILTIN\\Users|Authenticated Users)", ln, re.I)]
+                if re.search(r"(Everyone|BUILTIN\\Users|Authenticated Users)", ln, re.IGNORECASE)]
         inherited = "(I)" in out
         details[key] = {"wide_grants": wide, "inherited": inherited}
         if wide:
