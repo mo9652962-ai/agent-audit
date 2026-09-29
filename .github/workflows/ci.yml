@@ -14,14 +14,21 @@ jobs:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: astral-sh/setup-uv@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5
         with:
           enable-cache: true
-
       - name: Sync dependencies
         run: uv sync --extra dev
+      - name: Run tests（覆盖率棘轮：实测 35%，门槛 30%，只升不降）
+        run: uv run pytest -q --cov=agent_audit --cov-report=term-missing --cov-fail-under=30
 
-      - name: Run tests
-        run: uv run pytest -q
+  deps-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: astral-sh/setup-uv@d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86 # v5
+      - name: Sync dependencies
+        run: uv sync --extra dev
+      - name: pip-audit（已知漏洞扫描，跳过本项目 editable 安装）
+        run: uv run --with pip-audit pip-audit --skip-editable --progress-spinner off

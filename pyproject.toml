@@ -24,7 +24,7 @@ classifiers = [
 # 运行时零依赖；PyYAML 仅用于更精确的 MCP YAML 解析（缺失时自动降级为内置解析）
 [project.optional-dependencies]
 yaml = ["PyYAML>=6.0"]
-dev = ["pytest>=8.0", "PyYAML>=6.0"]
+dev = ["pytest>=8.0", "pytest-cov>=5.0", "PyYAML>=6.0"]
 
 [project.scripts]
 agent-audit = "agent_audit.cli:main"
