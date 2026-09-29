@@ -4,6 +4,17 @@
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-09-30
+
+### Added
+
+- CI：ruff + bandit lint job（dev extras + [tool.ruff] 配置）；publish 工作流补 CycloneDX SBOM 步骤
+- 测试：47 → 152 例，覆盖率 66% → 99.68%（deps 工具链 / 凭据 win-posix 权限分支 / 端口跨平台解析 / endpoints 多目录聚合 / cli 门禁与配置 / 降级解析全入测），覆盖率棘轮 60 → 97
+
+### Fixed
+
+- 修正 a799684 提交信息与实际 CI 不符的问题（lint job 此前并未真正存在）
+
 ## [0.1.0] - 2026-09-28
 
 ### Added
