@@ -43,5 +43,15 @@ jobs:
       - name: Build sdist & wheel
         run: uv build
 
+      - name: Generate SBOM (CycloneDX)
+        run: uv run --with cyclonedx-py cyclonedx-py environment --output-format json --output-file sbom.json
+
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3（SHA 固定）
+        with:
+          name: sbom-cyclonedx
+          path: sbom.json
+
+      # pypi-publish 在 OIDC 模式下默认生成 PEP 740 attestations（provenance）
       - name: Publish
         uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # release/v1
