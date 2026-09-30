@@ -50,3 +50,14 @@ jobs:
         run: uv sync --extra dev
       - name: pip-audit（已知漏洞扫描，跳过本项目 editable 安装）
         run: uv run --with pip-audit pip-audit --skip-editable --progress-spinner off
+
+  # 自吃狗粮：每次 push 用 action 审计本仓库，持续验证 action 本体与发布版工具
+  action-dogfood:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./action
+        with:
+          checks: git,deps
+          severity-threshold: high
+          upload-artifact: 'false'

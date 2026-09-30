@@ -1,0 +1,102 @@
+name: 'agent-audit'
+description: >
+  AI Agent 环境安全审计——在 CI 里对仓库跑 git 泄漏检查（密钥被追踪 / .gitignore 规则）
+  与依赖已知漏洞扫描（pip-audit 级数据源），按严重度门禁；也可开启其余检查项
+  （ports/skills/endpoints/credentials/mcp，适合仓库内自带 agent 资产的场景）。
+branding:
+  icon: 'shield'
+  color: 'red'
+
+inputs:
+  checks:
+    description: '要运行的检查项，逗号分隔（ports,skills,endpoints,credentials,git,deps,mcp）。CI 语境默认 git,deps'
+    required: false
+    default: 'git,deps'
+  severity-threshold:
+    description: '触发失败的最低严重度（low/medium/high/critical）'
+    required: false
+    default: 'high'
+  version:
+    description: 'agent-env-audit 的 PyPI 版本（显式锁定，避免 uvx 缓存漂移）'
+    required: false
+    default: '0.1.1'
+  config:
+    description: '可选 TOML 配置文件路径（paths/ports/endpoints 段）'
+    required: false
+    default: ''
+  output-dir:
+    description: '报告输出目录'
+    required: false
+    default: 'agent-audit-reports'
+  upload-artifact:
+    description: '是否把报告上传为 workflow artifact（agent-audit-reports）'
+    required: false
+    default: 'true'
+
+outputs:
+  verdict:
+    description: '总体判定（PASS / WARN / FAIL）'
+    value: ${{ steps.audit.outputs.verdict }}
+  report-md:
+    description: 'Markdown 报告路径'
+    value: ${{ steps.audit.outputs.report-md }}
+  report-json:
+    description: 'JSON 报告路径'
+    value: ${{ steps.audit.outputs.report-json }}
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+
+    - name: Run agent-audit
+      id: audit
+      shell: bash
+      env:
+        AUDIT_CHECKS: ${{ inputs.checks }}
+        AUDIT_THRESHOLD: ${{ inputs.severity-threshold }}
+        AUDIT_VERSION: ${{ inputs.version }}
+        AUDIT_CONFIG: ${{ inputs.config }}
+        AUDIT_OUTDIR: ${{ inputs.output-dir }}
+      run: |
+        set -e
+        CONFIG_ARGS=""
+        if [ -n "$AUDIT_CONFIG" ]; then CONFIG_ARGS="--config $AUDIT_CONFIG"; fi
+        set +e
+        uvx --from "agent-env-audit@$AUDIT_VERSION" agent-audit \
+          --checks "$AUDIT_CHECKS" $CONFIG_ARGS \
+          --format md,json --output-dir "$AUDIT_OUTDIR" \
+          --severity-threshold "$AUDIT_THRESHOLD"
+        rc=$?
+        set -e
+        REPORT_JSON=$(ls "$AUDIT_OUTDIR"/agent-audit-*.json 2>/dev/null | tail -1)
+        REPORT_MD=$(ls "$AUDIT_OUTDIR"/agent-audit-*.md 2>/dev/null | tail -1)
+        VERDICT="UNKNOWN"
+        if [ -n "$REPORT_JSON" ] && [ -f "$REPORT_JSON" ]; then
+          VERDICT=$(jq -r '.verdict // "UNKNOWN"' "$REPORT_JSON")
+        fi
+        BREACH=1
+        if [ "$rc" = "0" ]; then BREACH=0; fi
+        {
+          echo "verdict=$VERDICT"
+          echo "report-md=$REPORT_MD"
+          echo "report-json=$REPORT_JSON"
+          echo "breach=$BREACH"
+        } >> "$GITHUB_OUTPUT"
+        echo "agent-audit $AUDIT_VERSION: verdict=$VERDICT (exit=$rc)"
+
+    - name: Upload reports
+      if: ${{ inputs.upload-artifact == 'true' && steps.audit.outputs.report-json != '' }}
+      uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3（SHA 固定）
+      with:
+        name: agent-audit-reports
+        path: ${{ inputs.output-dir }}
+        if-no-files-found: ignore
+
+    - name: Security gate（发现达到阈值或执行出错则失败）
+      if: steps.audit.outputs.breach == '1'
+      shell: bash
+      run: |
+        echo "agent-audit: 判定 ${{ steps.audit.outputs.verdict }}，门禁触发（阈值 ${{ inputs.severity-threshold }}）"
+        echo "报告: ${{ steps.audit.outputs.report-md }}"
+        exit 1

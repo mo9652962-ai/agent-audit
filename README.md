@@ -3,6 +3,22 @@
 > 一键审计本机 AI Agent 环境：供应链投毒 / 密钥暴露 / 端口暴露 / MCP server 体检。
 > 运行时零依赖，全程只读，Windows 优先（同时支持 Linux/macOS）。
 
+## English
+
+**agent-audit** is a zero-dependency, read-only CLI that audits your local AI agent
+environment in one shot: supply-chain poisoning (market-installed skills), plaintext
+secrets & credential file permissions, port exposure, git-tracked secrets, known
+dependency vulnerabilities, and MCP server security (OWASP-aligned). Windows-first
+(`icacls` / `netstat` / `tasklist` are first-class citizens); works on Linux/macOS too.
+
+```bash
+pip install agent-env-audit
+agent-audit --checks git,deps --severity-threshold high
+```
+
+Also available as a [GitHub Action](action/README.md) for CI security gates.
+Issues in English are welcome（中文为主文档，完整英文翻译见 Roadmap）.
+
 ## 为什么需要它（2026 实战背景）
 
 - **ClawHavoc 供应链投毒**：800+ 恶意 skill 泛滥（2026-02 顶峰）；Snyk 审计 ClawHub 3984 技能中 **13.4% 含严重安全问题，36.8% 有漏洞**。市场导入 skill 拥有与用户同等的执行权限（terminal / file / web）。
@@ -14,7 +30,7 @@
 ## 快速开始
 
 ```bash
-pip install agent-env-audit     # PyPI（发行版即将上线；import 包名为 agent_audit）
+pip install agent-env-audit     # PyPI（import 包名为 agent_audit）
 # 或从源码安装
 pip install git+https://github.com/mo9652962-ai/agent-audit.git
 # 或免安装直接跑
@@ -93,6 +109,7 @@ python -m agent_audit -c audit.toml
 
 - [MCP Server 安全审计白皮书](docs/mcp-security-audit-whitepaper.md) — 5 项 OWASP 对齐判定清单，可直接落地
 - [系列文章：我给自己的 AI Agent 环境做了次安全审计](blog/01-self-audit-report.md) — 真实机器的完整审计记录
+- [CII Best Practices 答案清单](docs/cii-best-practices-answers.md) — OpenSSF badge 申请的逐条证据对照
 
 ## 方法论依据
 
@@ -113,13 +130,27 @@ token passthrough 检测）见 Roadmap。
 - **Windows 优先**：icacls / netstat / tasklist 一等公民——大部分 agent 安全工具默认 Linux，Windows 用户的 agent 环境没人管。
 - **证据导向**：每条发现附带证据（文件:行号、URL、ACL）与修复命令，不吓唬人。
 
+## 在 CI 里用（GitHub Action）
+
+把 agent-audit 作为仓库的 CI 安全门禁——PR 时自动跑 **git 泄漏检查**与**依赖漏洞扫描**，
+发现 ≥ 阈值级问题即失败：
+
+```yaml
+- uses: mo9652962-ai/agent-audit/action@action-v1.0.0
+  with:
+    severity-threshold: high
+```
+
+详见 [action/README.md](action/README.md)。本仓库自己的 CI 每次 push 都在用它审计自己（dogfood）。
+
 ## Roadmap
 
 - [ ] `skill-vetter` 集成：skill 安装前审查
 - [ ] `--fix` 模式：一键收紧权限 / 改监听（带确认）
 - [ ] OWASP Agentic AI Top 10 完整映射
-- [ ] GitHub Action：PR 时自动跑依赖 + git 泄漏检查
+- [x] GitHub Action：PR 时自动跑依赖 + git 泄漏检查（`action/`，action-v1.0.0）
 - [ ] MCP 检查扩展：tool poisoning / shadowing（工具描述注入）、token passthrough、MCP 配置文件权限（NSA CSI 清单）
+- [ ] README 完整英文翻译
 
 ## License
 
