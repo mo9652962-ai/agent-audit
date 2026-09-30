@@ -1,8 +1,5 @@
 name: 'agent-audit'
-description: >
-  AI Agent 环境安全审计——在 CI 里对仓库跑 git 泄漏检查（密钥被追踪 / .gitignore 规则）
-  与依赖已知漏洞扫描（pip-audit 级数据源），按严重度门禁；也可开启其余检查项
-  （ports/skills/endpoints/credentials/mcp，适合仓库内自带 agent 资产的场景）。
+description: 'CI 安全门禁：git 泄漏检查与依赖已知漏洞扫描，按严重度失败；可开启 MCP/skill 等 7 项审计（OWASP/NSA 对齐）。'
 branding:
   icon: 'shield'
   color: 'red'
