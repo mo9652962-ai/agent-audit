@@ -1,5 +1,15 @@
 """检查 7：MCP server 审计（对照 OWASP MCP Security Guide）。
 
+方法论对齐（2026-09 核对）：
+- OWASP: A Practical Guide for Secure MCP Server Development
+  https://genai.owasp.org/resource/a-practical-guide-for-secure-mcp-server-development/
+- NSA Cybersecurity Information Sheet: MCP Security（2026-06）
+  https://media.defense.gov/2026/Jun/02/2003943289/-1/-1/0/CSI_MCP_SECURITY.PDF
+- MCP 官方 Security Best Practices（2026-07-28 spec）
+  https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices
+已覆盖：来源可信、无远程 MCP、鉴权字段、闲置禁用；
+NSA 清单待工具化：tool poisoning/shadowing、token passthrough。
+
 审计判定清单（来自实战沉淀）：
 | 检查项       | 通过标准                                 | 反例                     |
 | 来源可信     | 本地 venv exe / 官方 @modelcontextprotocol/* | 未知名 npm 包、公网 URL |

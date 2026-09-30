@@ -94,6 +94,18 @@ python -m agent_audit -c audit.toml
 - [MCP Server 安全审计白皮书](docs/mcp-security-audit-whitepaper.md) — 5 项 OWASP 对齐判定清单，可直接落地
 - [系列文章：我给自己的 AI Agent 环境做了次安全审计](blog/01-self-audit-report.md) — 真实机器的完整审计记录
 
+## 方法论依据
+
+MCP 审计判定清单（检查 7）与以下权威指南对齐（2026-09 核对）：
+
+- [OWASP: A Practical Guide for Secure MCP Server Development](https://genai.owasp.org/resource/a-practical-guide-for-secure-mcp-server-development/) — 安全架构、鉴权、输入校验与会话隔离
+- [NSA Cybersecurity Information Sheet: MCP Security（2026-06）](https://media.defense.gov/2026/Jun/02/2003943289/-1/-1/0/CSI_MCP_SECURITY.PDF) — 真实部署中的观测性问题清单
+- [MCP 官方 Security Best Practices（2026-07-28 spec）](https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices) — 协议规范的官方安全考量
+
+已工具化覆盖：来源可信（未知名 npm 包 / 公网 URL）、远程暴露（非 loopback 判 critical）、
+鉴权字段缺失、闲置未禁用。NSA 清单中尚未工具化的项（tool poisoning / shadowing、
+token passthrough 检测）见 Roadmap。
+
 ## 设计原则
 
 - **零运行时依赖**：安全审计工具自己先做好供应链（PyYAML 可选，缺失时自动降级解析）。
@@ -107,6 +119,7 @@ python -m agent_audit -c audit.toml
 - [ ] `--fix` 模式：一键收紧权限 / 改监听（带确认）
 - [ ] OWASP Agentic AI Top 10 完整映射
 - [ ] GitHub Action：PR 时自动跑依赖 + git 泄漏检查
+- [ ] MCP 检查扩展：tool poisoning / shadowing（工具描述注入）、token passthrough、MCP 配置文件权限（NSA CSI 清单）
 
 ## License
 
