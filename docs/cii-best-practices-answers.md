@@ -3,7 +3,7 @@
 > 用途：在 [bestpractices.dev](https://www.bestpractices.dev) 申请 CII Best Practices
 > badge 时逐条填写。判据以 passing 级（60 条）为准；`esq-builder-mcp` 与
 > `skill-maintenance-mcp` 可复用本清单，差异在文末。
-> 整理日期：2026-09-30。徽章拿到后把徽章 URL 加到 README 顶部。
+> 整理日期：2026-09-30。**项目页已创建：[bestpractices.dev/projects/15101](https://www.bestpractices.dev/projects/15101)（in progress 24%）**，徽章已挂 README；按本清单把剩余判据勾选完，badge 自动转 passing。
 
 ## Basics（项目基础）
 

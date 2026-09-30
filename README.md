@@ -1,5 +1,7 @@
 # agent-audit
 
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/15101/badge)](https://www.bestpractices.dev/projects/15101)
+
 > 一键审计本机 AI Agent 环境：供应链投毒 / 密钥暴露 / 端口暴露 / MCP server 体检。
 > 运行时零依赖，全程只读，Windows 优先（同时支持 Linux/macOS）。
 
