@@ -3,6 +3,15 @@
 把 [agent-audit](../README.md) 作为 CI 安全门禁：对仓库跑 **git 泄漏检查**（密钥被追踪、
 .gitignore 缺规则）与**依赖已知漏洞扫描**，发现达到阈值时让 workflow 失败。
 
+> **Marketplace 版已独立成仓：[agent-audit-action](https://github.com/mo9652962-ai/agent-audit-action)**
+> （GitHub Marketplace 要求 action.yml 在仓库根目录 + semver tag）。推荐引用：
+>
+> ```yaml
+> - uses: mo9652962-ai/agent-audit-action@v1.0.0
+> ```
+>
+> 本目录是同款 action 的仓内副本（`uses: ./action` 本地引用仍可用），两份内容保持同步。
+
 ## 用法
 
 ```yaml
@@ -15,7 +24,7 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v5
-      - uses: mo9652962-ai/agent-audit/action@action-v1.0.0
+      - uses: mo9652962-ai/agent-audit-action@v1.0.0
         with:
           severity-threshold: high   # low/medium/high/critical
 ```

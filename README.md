@@ -138,12 +138,13 @@ token passthrough 检测）见 Roadmap。
 发现 ≥ 阈值级问题即失败：
 
 ```yaml
-- uses: mo9652962-ai/agent-audit/action@action-v1.0.0
+- uses: mo9652962-ai/agent-audit-action@v1.0.0
   with:
     severity-threshold: high
 ```
 
-详见 [action/README.md](action/README.md)。本仓库自己的 CI 每次 push 都在用它审计自己（dogfood）。
+详见 [agent-audit-action](https://github.com/mo9652962-ai/agent-audit-action)（Marketplace 发布仓）
+与 [action/README.md](action/README.md)。本仓库自己的 CI 每次 push 都在用它审计自己（dogfood）。
 
 ## Roadmap
 

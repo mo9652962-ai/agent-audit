@@ -51,12 +51,12 @@ jobs:
       - name: pip-audit（已知漏洞扫描，跳过本项目 editable 安装）
         run: uv run --with pip-audit pip-audit --skip-editable --progress-spinner off
 
-  # 自吃狗粮：每次 push 用 action 审计本仓库，持续验证 action 本体与发布版工具
+  # 自吃狗粮：每次 push 用 Marketplace 版 action 审计本仓库（SHA 固定，跨仓验证发布链）
   action-dogfood:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: ./action
+      - uses: mo9652962-ai/agent-audit-action@c43d8f4a63fe010675c0413662fb2f97a692c861 # v1.0.0
         with:
           checks: git,deps
           severity-threshold: high
