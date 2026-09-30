@@ -1,6 +1,7 @@
 # agent-audit
 
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/15101/badge)](https://www.bestpractices.dev/projects/15101)
+[![GitHub Marketplace](https://img.shields.io/badge/Marketplace-agent--audit-blue?logo=github)](https://github.com/marketplace/actions/agent-audit)
 
 > 一键审计本机 AI Agent 环境：供应链投毒 / 密钥暴露 / 端口暴露 / MCP server 体检。
 > 运行时零依赖，全程只读，Windows 优先（同时支持 Linux/macOS）。
@@ -138,12 +139,12 @@ token passthrough 检测）见 Roadmap。
 发现 ≥ 阈值级问题即失败：
 
 ```yaml
-- uses: mo9652962-ai/agent-audit-action@v1.0.0
+- uses: mo9652962-ai/agent-audit-action@v1.0.2
   with:
     severity-threshold: high
 ```
 
-详见 [agent-audit-action](https://github.com/mo9652962-ai/agent-audit-action)（Marketplace 发布仓）
+详见 [GitHub Marketplace 条目](https://github.com/marketplace/actions/agent-audit) / [agent-audit-action 仓库](https://github.com/mo9652962-ai/agent-audit-action)
 与 [action/README.md](action/README.md)。本仓库自己的 CI 每次 push 都在用它审计自己（dogfood）。
 
 ## Roadmap

@@ -7,7 +7,7 @@
 > （GitHub Marketplace 要求 action.yml 在仓库根目录 + semver tag）。推荐引用：
 >
 > ```yaml
-> - uses: mo9652962-ai/agent-audit-action@v1.0.0
+> - uses: mo9652962-ai/agent-audit-action@v1.0.2
 > ```
 >
 > 本目录是同款 action 的仓内副本（`uses: ./action` 本地引用仍可用），两份内容保持同步。
@@ -24,7 +24,7 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v5
-      - uses: mo9652962-ai/agent-audit-action@v1.0.0
+      - uses: mo9652962-ai/agent-audit-action@v1.0.2
         with:
           severity-threshold: high   # low/medium/high/critical
 ```
