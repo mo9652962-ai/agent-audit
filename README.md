@@ -189,3 +189,7 @@ PR 欢迎，规范见 [CONTRIBUTING.md](CONTRIBUTING.md)（Actions SHA 固定 / 
 ## License
 
 MIT
+
+---
+
+📌 **更多**：[作者仓库矩阵](https://github.com/mo9652962-ai)（墨题刷题机 / 第二大脑 / 安全三部曲 / 孵化线）
