@@ -41,3 +41,13 @@ def test_gitleaks_no_repo_skipped(tmp_path):
     assert r.status == "skipped"
     assert "未发现 git 仓库" in r.summary
     assert r.details[str(tmp_path)]["is_repo"] is False
+
+
+def test_gitleaks_ignores_example_and_template_files(tmp_path, monkeypatch):
+    _repo_shell(tmp_path, gitignore="*.env\nconfig.yaml\n")
+    sample_files = ".env.example\n.env.remote.example\nconfig.example.yaml\nREADME.md\n"
+    monkeypatch.setattr(git_mod, "run_cmd", lambda *a, **k: (0, sample_files, ""))
+    r = git_mod.check({"workspaces": [str(tmp_path)]})
+    assert r.details[str(tmp_path)]["secret_hits"] == []
+    assert not any("密钥文件被 git 追踪" in f.title for f in r.findings)
+    assert r.status == "pass"

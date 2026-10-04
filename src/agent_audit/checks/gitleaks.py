@@ -19,6 +19,10 @@ TRACKED_SECRET_RE = re.compile(
     r"(^|/)\.env(\..+)?$|config\.ya?ml$|\.(pem|key|p12|pfx)$|(^|/)secret",
     re.IGNORECASE,
 )
+EXAMPLE_FILE_RE = re.compile(
+    r"(\.example|\.sample|\.template|example\.|sample\.|template\.)",
+    re.IGNORECASE,
+)
 REQUIRED_RULES = [".env", "config.yaml"]
 
 
@@ -37,7 +41,7 @@ def check(ctx: dict) -> CheckResult:
             rc, out, err = run_cmd(["git", "-C", str(p), "ls-files"], timeout=60)
             if rc == 0:
                 tracked = [ln for ln in out.splitlines() if ln.strip()]
-                hits = [f for f in tracked if TRACKED_SECRET_RE.search(f)]
+                hits = [f for f in tracked if TRACKED_SECRET_RE.search(f) and not EXAMPLE_FILE_RE.search(f)]
                 entry["tracked_files"] = len(tracked)
                 entry["secret_hits"] = hits
                 if hits:
