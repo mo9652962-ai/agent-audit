@@ -186,9 +186,11 @@ MCP 审计判定清单（检查 7）与以下权威指南对齐（2026-09 核对
 
 PR 欢迎，规范见 [CONTRIBUTING.md](CONTRIBUTING.md)（Actions SHA 固定 / 覆盖率棘轮 / 测试政策 / 密钥卫生）。
 
-## License
+## 📄 许可证、安全与隐私 (License, Security & Privacy)
 
-MIT
+- **开源许可证**：[MIT License](LICENSE)
+- **安全政策**：[SECURITY.md](SECURITY.md)（设计边界、漏洞披露规范）
+- **隐私保护**：[PRIVACY.md](PRIVACY.md)（严格只读本地审计、零数据外流）
 
 ---
 
