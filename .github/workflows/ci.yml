@@ -56,7 +56,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: mo9652962-ai/agent-audit-action@b06637876a8e2c91f4316e471c61ff8df662624c # v1.0.2
+      - uses: mo9652962-ai/agent-audit-action@4655e4581de33db2e1a3eb0043705a11c7ec13da # v1.0.3
         with:
           checks: git,deps
           severity-threshold: high
